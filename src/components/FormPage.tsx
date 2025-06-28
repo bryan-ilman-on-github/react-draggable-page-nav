@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, X } from "lucide-react";
+import { Check, X, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 export function FormPage() {
@@ -80,9 +80,9 @@ export function FormPage() {
         <button
           type="submit"
           onClick={(e) => e.preventDefault()}
-          className="bg-[#fab95a] hover:bg-[#fcbf6f] text-black font-semibold rounded-md px-6 py-3 w-fit flex items-center gap-2 transition-colors"
+          className="bg-[#fab95a] hover:bg-[#fcbf6f] text-black font-semibold rounded-md px-6 py-3 w-fit flex items-center gap-[2px] transition-colors"
         >
-          Next <span className="-mb-[1px]">→</span>
+          Next<ArrowRight className="w-5 h-5 -mb-[1px]" />
         </button>
       </form>
     </div>
