@@ -73,7 +73,6 @@ export function PageNavigation() {
           axis="x"
           values={pages}
           onReorder={setPages}
-          // The page-list-container class is used for the pure CSS dashed line
           className="relative flex items-center flex-nowrap overflow-x-auto custom-scrollbar page-list-container"
         >
           {pages.map((page, index) => (
@@ -85,6 +84,7 @@ export function PageNavigation() {
               onAdd={() => addPage(index + 1)}
               onDelete={() => deletePage(page.id)}
               onRename={() => renamePage(page.id)}
+              isLast={index === pages.length - 1}
             />
           ))}
         </Reorder.Group>
