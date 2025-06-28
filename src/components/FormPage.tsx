@@ -33,7 +33,7 @@ export function FormPage() {
             <button
               type="button"
               onClick={() => setSelected("yes")}
-              className={`w-full flex items-center justify-start gap-3 px-4 py-3 rounded-md transition
+              className={`w-32 flex items-center justify-start gap-3 px-4 py-3 rounded-md transition
                 ${
                   selected === "yes"
                     ? "bg-[#1c2b49] border border-white text-white"
@@ -55,7 +55,7 @@ export function FormPage() {
             <button
               type="button"
               onClick={() => setSelected("no")}
-              className={`w-full flex items-center justify-start gap-3 px-4 py-3 rounded-md transition
+              className={`w-32 flex items-center justify-start gap-3 px-4 py-3 rounded-md transition
                 ${
                   selected === "no"
                     ? "bg-[#1c2b49] border border-white text-white"

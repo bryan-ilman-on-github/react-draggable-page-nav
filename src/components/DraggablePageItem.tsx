@@ -29,22 +29,21 @@ export function DraggablePageItem({
       value={page}
       dragListener={false}
       dragControls={dragControls}
-      className="flex items-center flex-shrink-0"
+      className="flex items-center flex-shrink-0 z-10" // z-10 ensures buttons are above the line
     >
-      <PageButton
-        page={page}
-        isActive={isActive}
-        onClick={onClick}
-        dragControls={dragControls}
-        onDelete={onDelete}
-        onRename={onRename}
-      />
+      {/* This div provides a background to mask the dashed line */}
+      <div className="bg-[#111111] pr-1">
+        <PageButton
+          page={page}
+          isActive={isActive}
+          onClick={onClick}
+          dragControls={dragControls}
+          onDelete={onDelete}
+          onRename={onRename}
+        />
+      </div>
 
       <div className="relative flex items-center justify-center w-10 h-8 group transition-all duration-300 ease-in-out hover:w-20">
-        {/* Dashed line */}
-        <div className="w-full border-t-2 border-dashed border-gray-700 transition-all"></div>
-
-        {/* Add button - visible on hover */}
         <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity">
           <AddPageButton onClick={onAdd} />
         </div>

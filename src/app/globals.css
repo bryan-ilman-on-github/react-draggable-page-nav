@@ -42,3 +42,16 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
+
+/* Pure CSS Dashed Line */
+.page-list-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 2px dashed #4a4a4a; /* A slightly more visible gray */
+  transform: translateY(-50%);
+  z-index: 0;
+}
