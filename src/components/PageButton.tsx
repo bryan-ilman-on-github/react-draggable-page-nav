@@ -64,7 +64,6 @@ export function PageButton({
           e.preventDefault();
           openMenu();
         }}
-        // The entire button is now the drag handle
         onPointerDown={(e) => dragControls.start(e)}
       >
         <page.icon

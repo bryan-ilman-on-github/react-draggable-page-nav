@@ -4,7 +4,6 @@ import { Reorder, useDragControls } from "framer-motion";
 import type { Page } from "./PageNavigation";
 import { PageButton } from "./PageButton";
 import { AddPageButton } from "./AddPageButton";
-import { RefObject } from "react";
 
 interface DraggablePageItemProps {
   page: Page;
@@ -13,8 +12,7 @@ interface DraggablePageItemProps {
   onAdd: () => void;
   onDelete: () => void;
   onRename: () => void;
-  isLast: boolean;
-  constraintsRef: RefObject<HTMLElement>;
+  showAddButton: boolean;
 }
 
 export function DraggablePageItem({
@@ -24,8 +22,7 @@ export function DraggablePageItem({
   onAdd,
   onDelete,
   onRename,
-  isLast,
-  constraintsRef,
+  showAddButton,
 }: DraggablePageItemProps) {
   const dragControls = useDragControls();
 
@@ -34,30 +31,33 @@ export function DraggablePageItem({
       value={page}
       dragListener={false}
       dragControls={dragControls}
-      dragConstraints={constraintsRef}
-      dragElastic={0}
-      className="flex items-center flex-shrink-0 z-10"
+      className="flex items-center flex-shrink-0"
     >
-      <div className="pr-1">
-        <PageButton
-          page={page}
-          isActive={isActive}
-          onClick={onClick}
-          dragControls={dragControls}
-          onDelete={onDelete}
-          onRename={onRename}
-        />
-      </div>
+      <PageButton
+        page={page}
+        isActive={isActive}
+        onClick={onClick}
+        dragControls={dragControls}
+        onDelete={onDelete}
+        onRename={onRename}
+      />
 
-      {isLast ? (
-        <div className="w-10 h-8"></div>
-      ) : (
-        <div className="relative flex items-center justify-center w-10 h-8 group transition-all duration-300 ease-in-out hover:w-20">
+      <div
+        className={
+          `relative flex items-center justify-center h-8 transition-all duration-200 ease-in-out ` +
+          (showAddButton ? "w-10 hover:w-20 group" : "w-10")
+        }
+      >
+        {/* Dashed line always visible */}
+        <div className="w-full border-t-2 border-dashed border-gray-700 transition-all"></div>
+
+        {/* Add button only if allowed */}
+        {showAddButton ? (
           <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity">
             <AddPageButton onClick={onAdd} />
           </div>
-        </div>
-      )}
+        ) : null}
+      </div>
     </Reorder.Item>
   );
 }

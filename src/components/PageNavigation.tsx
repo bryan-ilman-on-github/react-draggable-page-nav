@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Reorder } from "framer-motion";
 import {
   InfoIcon,
@@ -27,7 +27,6 @@ const INITIAL_PAGES: Page[] = [
 export function PageNavigation() {
   const [pages, setPages] = useState<Page[]>(INITIAL_PAGES);
   const [activePageId, setActivePageId] = useState<string>("info");
-  const constraintsRef = useRef<HTMLOListElement>(null);
 
   const addPage = (index: number) => {
     const newPage: Page = {
@@ -68,14 +67,13 @@ export function PageNavigation() {
 
   return (
     <div className="w-full bg-[#111111] p-2">
-      <div className="relative flex items-center">
+      <div className="h-12 overflow-hidden"> {/* 👈 fixed height wrapper */}
         <Reorder.Group
-          ref={constraintsRef}
           as="ol"
           axis="x"
           values={pages}
           onReorder={setPages}
-          className="relative flex items-center flex-nowrap overflow-x-auto custom-scrollbar page-list-container"
+          className="flex items-center flex-nowrap overflow-x-auto scrollbar-gutter-stable custom-scrollbar pb-1.5"
         >
           {pages.map((page, index) => (
             <DraggablePageItem
@@ -86,20 +84,24 @@ export function PageNavigation() {
               onAdd={() => addPage(index + 1)}
               onDelete={() => deletePage(page.id)}
               onRename={() => renamePage(page.id)}
-              isLast={index === pages.length - 1}
-              constraintsRef={constraintsRef as React.RefObject<HTMLElement>}
+              showAddButton={index < pages.length - 1} // 👈 only show '+' if not last
             />
           ))}
-        </Reorder.Group>
-        <div className="flex-shrink-0">
-          <button
-            onClick={() => addPage(pages.length)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-white text-black shadow-md hover:bg-gray-200 transition-colors"
+          <Reorder.Item
+            value={{ id: "__add_page__" }} // 👈 just a placeholder value
+            dragListener={false}
+            dragControls={undefined as any} // not draggable
+            className="flex-shrink-0"
           >
-            <AddIcon className="h-5 w-5 text-black" />
-            Add page
-          </button>
-        </div>
+            <button
+              onClick={() => addPage(pages.length)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-white text-black shadow-md hover:bg-gray-200 transition-colors"
+            >
+              <AddIcon className="h-5 w-5 text-black" />
+              Add page
+            </button>
+          </Reorder.Item>
+        </Reorder.Group>
       </div>
     </div>
   );

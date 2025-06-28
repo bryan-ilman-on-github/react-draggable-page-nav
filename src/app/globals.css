@@ -24,24 +24,20 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-/* Styles to hide the scrollbar */
-.custom-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
 .custom-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Opera */
+  height: 6px;
 }
 
-/* Pure CSS Dashed Line */
-.page-list-container::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 0;
-  border-top: 2px dashed #4a4a4a; /* A slightly more visible gray */
-  transform: translateY(-50%);
-  z-index: 0;
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #777;
 }
