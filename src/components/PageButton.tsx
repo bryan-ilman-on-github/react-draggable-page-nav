@@ -66,7 +66,6 @@ export function PageButton({
         }}
         // The entire button is now the drag handle
         onPointerDown={(e) => dragControls.start(e)}
-        whileTap={{ scale: isActive ? 1 : 0.95 }}
       >
         <page.icon
           className={`h-5 w-5 ${
@@ -83,7 +82,7 @@ export function PageButton({
               isMenuOpen ? setIsMenuOpen(false) : openMenu();
             }}
             aria-label="Open page settings"
-            className="ml-1 p-0.5 rounded hover:bg-black/10 cursor-pointer"
+            className="rounded hover:bg-black/10 cursor-pointer"
           >
             <MoreIcon className="h-5 w-5" />
           </button>

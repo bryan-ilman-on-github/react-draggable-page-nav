@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Reorder } from "framer-motion";
 import {
   InfoIcon,
@@ -27,6 +27,7 @@ const INITIAL_PAGES: Page[] = [
 export function PageNavigation() {
   const [pages, setPages] = useState<Page[]>(INITIAL_PAGES);
   const [activePageId, setActivePageId] = useState<string>("info");
+  const constraintsRef = useRef<HTMLOListElement>(null);
 
   const addPage = (index: number) => {
     const newPage: Page = {
@@ -69,6 +70,7 @@ export function PageNavigation() {
     <div className="w-full bg-[#111111] p-2">
       <div className="relative flex items-center">
         <Reorder.Group
+          ref={constraintsRef}
           as="ol"
           axis="x"
           values={pages}
@@ -85,15 +87,16 @@ export function PageNavigation() {
               onDelete={() => deletePage(page.id)}
               onRename={() => renamePage(page.id)}
               isLast={index === pages.length - 1}
+              constraintsRef={constraintsRef as React.RefObject<HTMLElement>}
             />
           ))}
         </Reorder.Group>
         <div className="flex-shrink-0">
           <button
             onClick={() => addPage(pages.length)}
-            className="flex items-center gap-2 ml-4 px-4 py-2 rounded-md text-white/70 hover:bg-white/10 transition-colors"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-white text-black shadow-md hover:bg-gray-200 transition-colors"
           >
-            <AddIcon />
+            <AddIcon className="h-5 w-5 text-black" />
             Add page
           </button>
         </div>
