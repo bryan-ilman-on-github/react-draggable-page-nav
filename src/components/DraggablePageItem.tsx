@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion, Reorder, useDragControls } from "framer-motion";
 import type { Page } from "./PageNavigation";
 import { PageButton } from "./PageButton";
@@ -25,6 +26,7 @@ export function DraggablePageItem({
   showAddButton,
 }: DraggablePageItemProps) {
   const dragControls = useDragControls();
+  const [isDragging, setIsDragging] = useState(false);
 
   return (
     <Reorder.Item
@@ -32,6 +34,9 @@ export function DraggablePageItem({
       dragListener={false}
       dragControls={dragControls}
       className="flex items-center flex-shrink-0"
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={() => setIsDragging(false)}
+      layout="position"
     >
       <motion.div
         initial={page.isNew ? { opacity: 0, y: -10 } : false}
@@ -41,10 +46,13 @@ export function DraggablePageItem({
           delay: page.isNew ? 0.2 : 0,
           ease: "easeOut",
         }}
+        // Add a subtle scale effect while dragging for better UX
+        whileDrag={{ scale: 1.05 }}
       >
         <PageButton
           page={page}
           isActive={isActive}
+          isBeingDragged={isDragging} // Pass the drag state down
           onClick={onClick}
           dragControls={dragControls}
           onDelete={onDelete}
@@ -58,10 +66,7 @@ export function DraggablePageItem({
           (showAddButton ? "w-[20px] hover:w-[56px] group" : "w-[20px]")
         }
       >
-        {/* Dashed line always visible */}
         <div className="w-full border-t-2 border-dashed border-[#C0C0C0] transition-all"></div>
-
-        {/* Add button only if allowed */}
         {showAddButton ? (
           <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <AddPageButton onClick={onAdd} />

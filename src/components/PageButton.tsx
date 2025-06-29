@@ -9,6 +9,7 @@ import { SettingsMenu } from "./SettingsMenu";
 interface PageButtonProps {
   page: Page;
   isActive: boolean;
+  isBeingDragged?: boolean;
   onClick: () => void;
   dragControls: ReturnType<typeof useDragControls>;
   onDelete: () => void;
@@ -18,39 +19,45 @@ interface PageButtonProps {
 export function PageButton({
   page,
   isActive,
+  isBeingDragged,
   onClick,
   dragControls,
   onDelete,
   onRename,
 }: PageButtonProps) {
-  const buttonRef = useRef<HTMLDivElement>(null);
-
-  const [isFocused, setIsFocused] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
 
+  // The button is visually "active" if it's the current page OR if it's being dragged.
+  const isEffectivelyActive = isActive || isBeingDragged;
+
   const containerClasses = `
     flex items-center gap-[6px] px-[10px] py-[4px] h-[32px] rounded-md transition-all duration-200 cursor-grab
-    outline-none
+    outline-none group
     ${
-      isActive
+      isEffectivelyActive
         ? "bg-white text-[#1A1A1A] shadow-[0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)] border-[0.5px] border-[#E1E1E1]"
         : "bg-[#9DA4B226] text-[#677289] hover:bg-[#9DA4B259] border border-transparent"
     }
-    /* keyboard focus */
+    /* --- Keyboard (Tab) Focus Styling --- */
+    /* When tab-focused, force the white background and text color */
     focus-visible:bg-white
     focus-visible:text-[#1A1A1A]
+    /* Apply the specific blue shadow you wanted for tab focus */
     focus-visible:shadow-[0px_0px_0px_1.5px_rgba(47,114,226,0.25),_0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)]
     focus-visible:border-[0.5px]
     focus-visible:border-[#2F72E2]
-    /* mouse/programmatic focus */
-    focus:bg-white
-    focus:text-[#1A1A1A]
-    focus:shadow-[0px_0px_0px_1.5px_rgba(47,114,226,0.25),_0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)]
-    focus:border-[0.5px]
-    focus:border-[#2F72E2]
   `;
+
+  // Apply the blue shadow *only* when dragging, via the style prop for reliability.
+  const motionStyle = isBeingDragged
+    ? {
+        boxShadow:
+          "0px 0px 0px 1.5px rgba(18, 87, 203, 0.25), 0px 1px 1px 0px rgba(0, 0, 0, 0.02), 0px 1px 3px 0px rgba(0, 0, 0, 0.04)",
+        border: "0.5px solid #2F72E2",
+      }
+    : {};
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -69,34 +76,32 @@ export function PageButton({
   return (
     <div className="relative" ref={containerRef}>
       <motion.div
-        ref={buttonRef}
         role="button"
         tabIndex={0}
         aria-pressed={isActive}
         className={containerClasses}
-        onClick={(e) => {
-          buttonRef.current?.focus(); // programmatically set focus
-          onClick();
-        }}
+        style={motionStyle}
+        onClick={onClick}
         onKeyDown={handleKeyDown}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
         onContextMenu={(e) => {
           e.preventDefault();
           openMenu();
         }}
         onPointerDown={(e) => {
           dragControls.start(e);
-          buttonRef.current?.focus(); // also focus when dragging
         }}
       >
         <page.icon
-          {...(isActive || isFocused ? { className: "text-[#F59D0E]" } : {})}
+          className={
+            // Icon is orange if it's active/dragged OR if the parent is tab-focused
+            isEffectivelyActive
+              ? "text-[#F59D0E]"
+              : "group-focus-visible:text-[#F59D0E]"
+          }
         />
         <span>{page.name}</span>
         {isActive && (
           <button
-            // Stop propagation to prevent dragging when clicking the settings button
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation();
