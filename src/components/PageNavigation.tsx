@@ -5,15 +5,8 @@ import { Reorder } from "framer-motion";
 import {
   BigAddIcon,
   CheckIcon,
-  CopyIcon,
-  DeleteIcon,
   DocumentIcon,
-  DuplicateIcon,
-  FlagIcon,
   InfoIcon,
-  MoreIcon,
-  RenameIcon,
-  SmallAddIcon,
 } from "./icons";
 import { DraggablePageItem } from "./DraggablePageItem";
 

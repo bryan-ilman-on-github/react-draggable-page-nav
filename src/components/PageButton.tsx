@@ -38,11 +38,18 @@ export function PageButton({
         ? "bg-white text-[#1A1A1A] shadow-[0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)] border-[0.5px] border-[#E1E1E1]"
         : "bg-[#9DA4B226] text-[#677289] hover:bg-[#9DA4B259] border border-transparent"
     }
+    /* keyboard focus */
     focus-visible:bg-white
     focus-visible:text-[#1A1A1A]
     focus-visible:shadow-[0px_0px_0px_1.5px_rgba(47,114,226,0.25),_0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)]
     focus-visible:border-[0.5px]
     focus-visible:border-[#2F72E2]
+    /* mouse/programmatic focus */
+    focus:bg-white
+    focus:text-[#1A1A1A]
+    focus:shadow-[0px_0px_0px_1.5px_rgba(47,114,226,0.25),_0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)]
+    focus:border-[0.5px]
+    focus:border-[#2F72E2]
   `;
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
