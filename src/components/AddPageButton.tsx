@@ -1,6 +1,6 @@
 "use client";
 
-import { AddIcon } from "./icons";
+import { SmallAddIcon } from "./icons";
 
 interface AddPageButtonProps {
   onClick: () => void;
@@ -10,10 +10,10 @@ export function AddPageButton({ onClick }: AddPageButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-full p-1 text-white/70 transition-colors"
+      className="bg-[#FFFFFF] hover:bg-gray-100 rounded-full p-[4px] shadow-[0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)] border-[0.5px] border-[#E1E1E1] transition-colors"
       aria-label="Add new page"
     >
-      <AddIcon className="h-5 w-5" />
+      <SmallAddIcon />
     </button>
   );
 }

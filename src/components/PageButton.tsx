@@ -23,18 +23,26 @@ export function PageButton({
   onDelete,
   onRename,
 }: PageButtonProps) {
+  const buttonRef = useRef<HTMLDivElement>(null);
+
+  const [isFocused, setIsFocused] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
 
   const containerClasses = `
-    flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 cursor-grab
-    focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#111]
+    flex items-center gap-[6px] px-[10px] py-[4px] h-[32px] rounded-md transition-all duration-200 cursor-grab
+    outline-none
     ${
       isActive
-        ? "bg-white text-black shadow-md"
-        : "bg-[#2a2a2a] text-white/70 hover:bg-[#3a3a3a]"
+        ? "bg-white text-[#1A1A1A] shadow-[0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)] border-[0.5px] border-[#E1E1E1]"
+        : "bg-[#9DA4B226] text-[#677289] hover:bg-[#9DA4B259] border border-transparent"
     }
+    focus-visible:bg-white
+    focus-visible:text-[#1A1A1A]
+    focus-visible:shadow-[0px_0px_0px_1.5px_rgba(47,114,226,0.25),_0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)]
+    focus-visible:border-[0.5px]
+    focus-visible:border-[#2F72E2]
   `;
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -54,22 +62,29 @@ export function PageButton({
   return (
     <div className="relative" ref={containerRef}>
       <motion.div
+        ref={buttonRef}
         role="button"
         tabIndex={0}
         aria-pressed={isActive}
         className={containerClasses}
-        onClick={onClick}
+        onClick={(e) => {
+          buttonRef.current?.focus(); // programmatically set focus
+          onClick();
+        }}
         onKeyDown={handleKeyDown}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         onContextMenu={(e) => {
           e.preventDefault();
           openMenu();
         }}
-        onPointerDown={(e) => dragControls.start(e)}
+        onPointerDown={(e) => {
+          dragControls.start(e);
+          buttonRef.current?.focus(); // also focus when dragging
+        }}
       >
         <page.icon
-          className={`h-5 w-5 ${
-            isActive ? "text-orange-500" : "text-white/50"
-          }`}
+          {...(isActive || isFocused ? { className: "text-[#F59D0E]" } : {})}
         />
         <span>{page.name}</span>
         {isActive && (
@@ -81,9 +96,9 @@ export function PageButton({
               isMenuOpen ? setIsMenuOpen(false) : openMenu();
             }}
             aria-label="Open page settings"
-            className="rounded hover:bg-black/10 cursor-pointer"
+            className="ml-[2px] py-[2px] rounded hover:bg-black/10 cursor-pointer"
           >
-            <MoreIcon className="h-5 w-5" />
+            <MoreIcon />
           </button>
         )}
       </motion.div>
