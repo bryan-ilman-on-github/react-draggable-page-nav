@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { AnimatePresence, motion, MotionStyle } from "framer-motion";
 import {
   FlagIcon,
-  PencilIcon,
+  RenameIcon,
   CopyIcon,
   DuplicateIcon,
   DeleteIcon,
@@ -52,7 +52,7 @@ export function SettingsMenu({
 
   const menuItems = [
     { icon: FlagIcon, label: "Set as first page", action: () => {} },
-    { icon: PencilIcon, label: "Rename", action: onRename },
+    { icon: RenameIcon, label: "Rename", action: onRename },
     { icon: CopyIcon, label: "Copy", action: () => {} },
     { icon: DuplicateIcon, label: "Duplicate", action: () => {} },
     {
@@ -98,6 +98,7 @@ export function SettingsMenu({
                         : "text-gray-700 hover:bg-gray-100"
                     }`}
                   >
+                    {/* TODO: Remove extra attributes */}
                     <item.icon className="h-4 w-4 text-gray-500" />
                     <span>{item.label}</span>
                   </button>

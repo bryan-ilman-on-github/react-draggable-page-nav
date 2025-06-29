@@ -1,5 +1,7 @@
 import React from "react";
 
+import RenameSVG from '../assets/icons/pencil-line.svg';
+
 type IconProps = React.SVGProps<SVGSVGElement>;
 
 export const InfoIcon = (props: IconProps) => (
@@ -99,18 +101,8 @@ export const FlagIcon = (props: IconProps) => (
   </svg>
 );
 
-export const PencilIcon = (props: IconProps) => (
-  <svg
-    {...props}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-  </svg>
+export const RenameIcon = (props: IconProps) => (
+  <RenameSVG {...props} />
 );
 
 export const CopyIcon = (props: IconProps) => (
@@ -158,21 +150,5 @@ export const DeleteIcon = (props: IconProps) => (
     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
     <line x1="10" y1="11" x2="10" y2="17" />
     <line x1="14" y1="11" x2="14" y2="17" />
-  </svg>
-);
-
-export const DragHandleIcon = (props: IconProps) => (
-  <svg
-    {...props}
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="currentColor"
-  >
-    <circle cx="10" cy="8" r="1" />
-    <circle cx="10" cy="12" r="1" />
-    <circle cx="10" cy="16" r="1" />
-    <circle cx="14" cy="8" r="1" />
-    <circle cx="14" cy="12" r="1" />
-    <circle cx="14" cy="16" r="1" />
   </svg>
 );
