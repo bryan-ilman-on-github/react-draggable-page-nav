@@ -29,7 +29,6 @@ export function PageButton({
   const containerRef = useRef<HTMLDivElement>(null);
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
 
-  // The button is visually "active" if it's the current page OR if it's being dragged.
   const isEffectivelyActive = isActive || isBeingDragged;
 
   const containerClasses = `
@@ -40,17 +39,13 @@ export function PageButton({
         ? "bg-white text-[#1A1A1A] shadow-[0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)] border-[0.5px] border-[#E1E1E1]"
         : "bg-[#9DA4B226] text-[#677289] hover:bg-[#9DA4B259] border border-transparent"
     }
-    /* --- Keyboard (Tab) Focus Styling --- */
-    /* When tab-focused, force the white background and text color */
     focus-visible:bg-white
     focus-visible:text-[#1A1A1A]
-    /* Apply the specific blue shadow you wanted for tab focus */
-    focus-visible:shadow-[0px_0px_0px_1.5px_rgba(47,114,226,0.25),_0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)]
+    focus-visible:shadow-[0px_0px_0px_1.5px_rgba(18,87,203,0.25),_0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)]
     focus-visible:border-[0.5px]
     focus-visible:border-[#2F72E2]
   `;
 
-  // Apply the blue shadow *only* when dragging, via the style prop for reliability.
   const motionStyle = isBeingDragged
     ? {
         boxShadow:
@@ -81,7 +76,7 @@ export function PageButton({
         aria-pressed={isActive}
         className={containerClasses}
         style={motionStyle}
-        onClick={onClick}
+        onTap={onClick}
         onKeyDown={handleKeyDown}
         onContextMenu={(e) => {
           e.preventDefault();
@@ -93,7 +88,6 @@ export function PageButton({
       >
         <page.icon
           className={
-            // Icon is orange if it's active/dragged OR if the parent is tab-focused
             isEffectivelyActive
               ? "text-[#F59D0E]"
               : "group-focus-visible:text-[#F59D0E]"

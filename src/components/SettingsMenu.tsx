@@ -80,19 +80,11 @@ export function SettingsMenu({
       left: `${anchorRect.left}px`, // Align left edge with anchor.
     };
 
-    // Adjusts top or bottom based on menu direction.
-    if (shouldOpenUpwards) {
-      // If opening upwards, set bottom relative to anchor's top with a 4px offset.
-      baseStyle.bottom = `${window.innerHeight - anchorRect.top + 4}px`;
-      baseStyle.top = "auto"; // Ensure top is not set.
-    } else {
-      // If opening downwards, set top relative to anchor's bottom with a 4px offset.
-      baseStyle.top = `${anchorRect.bottom + 4}px`;
-      baseStyle.bottom = "auto"; // Ensure bottom is not set.
-    }
+    baseStyle.bottom = `${window.innerHeight - anchorRect.top + 8}px`;
+    baseStyle.top = "auto"; // Ensure top is not set.
 
     return baseStyle;
-  }, [anchorRect, shouldOpenUpwards]); // Recalculates when anchorRect or shouldOpenUpwards changes.
+  }, [anchorRect]);
 
   /**
    * Defines the standard menu items.
@@ -131,10 +123,10 @@ export function SettingsMenu({
           {/* The main menu container, using Framer Motion for animations. */}
           <motion.div
             style={menuStyle} // Applies the calculated positioning style.
-            className="w-[240px] bg-white rounded-lg shadow-lg z-50 overflow-hidden flex flex-col" // Tailwind CSS for appearance.
-            initial={{ opacity: 0, y: shouldOpenUpwards ? 10 : -10 }} // Initial animation state.
+            className="w-[240px] bg-white rounded-lg z-50 overflow-hidden flex flex-col shadow-[0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)] border-[0.5px] border-[#E1E1E1]" // Tailwind CSS for appearance.
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }} // Animation when opening.
-            exit={{ opacity: 0, y: shouldOpenUpwards ? 10 : -10 }} // Animation when closing.
+            exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2, ease: "easeOut" }} // Animation speed and curve.
           >
             {/* Header section for the menu. */}
@@ -148,7 +140,7 @@ export function SettingsMenu({
             <div className="h-[0.5px] w-full bg-[#E1E1E1]" />
 
             {/* Section containing the list of menu items. */}
-            <div className="flex-1">
+            <div className="flex-1 py-[6px]">
               <ul className="flex flex-col">
                 {/* Renders each standard menu item. */}
                 {menuItems.map((item) => (
@@ -158,7 +150,7 @@ export function SettingsMenu({
                         item.action(); // Execute the item's specific action.
                         onClose(); // Close the menu after the action.
                       }}
-                      className="w-full text-left flex items-center gap-[6px] p-[12px] text-[14px] font-[Inter] font-medium text-[#1A1A1A] transition-colors hover:bg-[#E1E1E1]"
+                      className="w-full text-left flex items-center gap-[6px] p-[6px] text-[14px] font-[Inter] font-medium text-[#1A1A1A] transition-colors hover:bg-[#E1E1E1]"
                     >
                       <item.icon /> {/* Item's icon. */}
                       <span>{item.label}</span> {/* Item's label. */}
@@ -168,7 +160,7 @@ export function SettingsMenu({
               </ul>
 
               {/* Another horizontal divider, visually separating item groups. */}
-              <div className="h-[0.2px] mx-[12px] bg-[#E1E1E1]" />
+              <div className="h-[0.2px] mx-[12px] my-[6px] bg-[#E1E1E1]" />
 
               {/* Section for the destructive action item. */}
               <ul>
@@ -178,7 +170,7 @@ export function SettingsMenu({
                       destructiveMenuItem.action(); // Execute the destructive action.
                       onClose(); // Close the menu.
                     }}
-                    className="w-full text-left flex items-center gap-[6px] p-[12px] text-[14px] font-[Inter] font-medium text-[#EF494F] transition-colors hover:bg-red-50"
+                    className="w-full text-left flex items-center gap-[6px] p-[6px] text-[14px] font-[Inter] font-medium text-[#EF494F] transition-colors hover:bg-red-50"
                   >
                     <destructiveMenuItem.icon />{" "}
                     {/* Destructive item's icon. */}
