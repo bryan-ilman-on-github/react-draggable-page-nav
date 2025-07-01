@@ -2,14 +2,10 @@
 
 import { useState } from "react";
 import { Reorder } from "framer-motion";
-import {
-  BigAddIcon,
-  CheckIcon,
-  DocumentIcon,
-  InfoIcon,
-} from "./icons";
+import { BigAddIcon, CheckIcon, DocumentIcon, InfoIcon } from "./icons";
 import { DraggablePageItem } from "./DraggablePageItem";
 
+// Define the page type and initial state.
 export type Page = {
   id: string;
   name: string;
@@ -25,54 +21,55 @@ const INITIAL_PAGES: Page[] = [
 
 export function PageNavigation() {
   const [pages, setPages] = useState<Page[]>(INITIAL_PAGES);
-  const [activePageId, setActivePageId] = useState<string>("info");
+  const [activePageId, setActivePageId] = useState("info");
 
+  // Handle adding a new page at specified index.
   const addPage = (index: number) => {
-    const newPage: Page & { isNew?: boolean } = {
+    const newPage = {
       id: `new-page-${Date.now()}`,
       name: "New Page",
       icon: DocumentIcon,
       isNew: true,
     };
-    const newPages = [...pages];
-    newPages.splice(index, 0, newPage);
-    setPages(newPages);
 
-    // Optional: clean up `isNew` flag after render
+    setPages([...pages.slice(0, index), newPage, ...pages.slice(index)]);
+
+    // Remove the 'isNew' flag after animation completes.
     setTimeout(() => {
-      setPages((prev) =>
-        prev.map((p) =>
-          p.id === newPage.id ? { ...p, isNew: false } : p
-        )
+      setPages(prevPages =>
+        prevPages.map(p => (p.id === newPage.id ? { ...p, isNew: false } : p))
       );
-    }, 800); // long enough for one frame.
+    }, 800);
   };
 
+  // Handle deleting a page and updating active page if needed.
   const deletePage = (pageId: string) => {
-    const pageIndex = pages.findIndex((p) => p.id === pageId);
+    const pageIndex = pages.findIndex(p => p.id === pageId);
     if (pageIndex === -1) return;
 
-    const newPages = pages.filter((p) => p.id !== pageId);
+    const newPages = pages.filter(p => p.id !== pageId);
+    setPages(newPages);
 
     if (activePageId === pageId) {
-      if (newPages.length > 0) {
-        const newActiveIndex = Math.max(0, pageIndex - 1);
-        setActivePageId(newPages[newActiveIndex].id);
-      } else {
-        setActivePageId("");
-      }
+      const newActiveIndex = Math.max(0, pageIndex - 1);
+      setActivePageId(newPages[newActiveIndex]?.id || "");
     }
-    setPages(newPages);
   };
 
+  // Handle renaming a page via prompt.
   const renamePage = (pageId: string) => {
     const newName = prompt("Enter new page name:");
-    if (newName && newName.trim() !== "") {
-      setPages(
-        pages.map((p) => (p.id === pageId ? { ...p, name: newName } : p))
-      );
+    if (newName?.trim()) {
+      setPages(pages.map(p => (p.id === pageId ? { ...p, name: newName } : p)));
     }
   };
+
+  // Styles reused across components.
+  const addButtonStyle = `
+    flex items-center gap-2 px-3 h-[32px] rounded-md bg-white text-black 
+    shadow-[0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)] 
+    border-[0.5px] border-[#E1E1E1] transition-colors hover:bg-gray-100
+  `;
 
   return (
     <div className="w-full bg-[#F9FAFB]">
@@ -92,19 +89,17 @@ export function PageNavigation() {
             onAdd={() => addPage(index + 1)}
             onDelete={() => deletePage(page.id)}
             onRename={() => renamePage(page.id)}
-            showAddButton={index < pages.length - 1} // 👈 only show '+' if not last
+            showAddButton={index < pages.length - 1}
           />
         ))}
+
         <Reorder.Item
-          value={{ id: "__add_page__" }} // 👈 just a placeholder value
+          value={{ id: "__add_page__" }}
           dragListener={false}
-          dragControls={undefined as any} // not draggable
+          dragControls={undefined as any}
           className="flex-shrink-0"
         >
-          <button
-            onClick={() => addPage(pages.length)}
-            className="flex items-center gap-2 px-3 h-[32px] rounded-md bg-white text-black shadow-[0px_1px_1px_0px_rgba(0,0,0,0.02),_0px_1px_3px_0px_rgba(0,0,0,0.04)] border-[0.5px] border-[#E1E1E1] transition-colors hover:bg-gray-100"
-          >
+          <button onClick={() => addPage(pages.length)} className={addButtonStyle}>
             <BigAddIcon />
             Add page
           </button>

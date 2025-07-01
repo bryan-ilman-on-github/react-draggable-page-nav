@@ -1,3 +1,16 @@
+@font-face {
+    font-family: 'BL Melody';
+    font-style: normal;
+    font-weight: 500;
+    src: local('BL Melody'), url('/fonts/BLMelody-Medium.woff') format('woff');
+}
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Inter'), url('/fonts/Inter-Medium.woff') format('woff');
+}
+
 @import "tailwindcss";
 
 :root {

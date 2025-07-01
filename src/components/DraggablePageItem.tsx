@@ -28,6 +28,18 @@ export function DraggablePageItem({
   const dragControls = useDragControls();
   const [isDragging, setIsDragging] = useState(false);
 
+  // Animation configuration for new pages.
+  const newPageAnimation = {
+    initial: page.isNew ? { opacity: 0, y: -10 } : false,
+    animate: { opacity: 1, y: 0 },
+    transition: {
+      duration: 0.2,
+      delay: page.isNew ? 0.2 : 0,
+      ease: "easeOut" as const,
+    },
+    whileDrag: { scale: 1.05 } // Subtle scale effect during drag.
+  };
+
   return (
     <Reorder.Item
       value={page}
@@ -38,21 +50,12 @@ export function DraggablePageItem({
       onDragEnd={() => setIsDragging(false)}
       layout="position"
     >
-      <motion.div
-        initial={page.isNew ? { opacity: 0, y: -10 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.2,
-          delay: page.isNew ? 0.2 : 0,
-          ease: "easeOut",
-        }}
-        // Add a subtle scale effect while dragging for better UX
-        whileDrag={{ scale: 1.05 }}
-      >
+      {/* Animated wrapper for page button. */}
+      <motion.div {...newPageAnimation}>
         <PageButton
           page={page}
           isActive={isActive}
-          isBeingDragged={isDragging} // Pass the drag state down
+          isBeingDragged={isDragging}
           onClick={onClick}
           dragControls={dragControls}
           onDelete={onDelete}
@@ -60,18 +63,19 @@ export function DraggablePageItem({
         />
       </motion.div>
 
-      <div
-        className={
-          `relative flex items-center justify-center h-8 transition-all duration-200 ease-in-out ` +
-          (showAddButton ? "w-[20px] hover:w-[56px] group" : "w-[20px]")
-        }
-      >
-        <div className="w-full border-t-2 border-dashed border-[#C0C0C0] transition-all"></div>
-        {showAddButton ? (
+      {/* Container for the dashed line and add button. */}
+      <div className={`
+        relative flex items-center justify-center h-8
+        transition-all duration-200 ease-in-out
+        ${showAddButton ? "w-[20px] hover:w-[56px] group" : "w-[20px]"}
+      `}>
+        <div className="w-full border-t-2 border-dashed border-[#C0C0C0] transition-all" />
+        {/* Conditionally render add button with hover effect. */}
+        {showAddButton && (
           <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <AddPageButton onClick={onAdd} />
           </div>
-        ) : null}
+        )}
       </div>
     </Reorder.Item>
   );
