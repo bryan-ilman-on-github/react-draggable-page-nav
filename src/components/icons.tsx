@@ -26,28 +26,23 @@ const COLORS = {
   coralRed: "#EF494F",
 } as const;
 
-// Create a factory function to generate consistent icons.
-const createIcon = (SVGComponent: React.FC<IconProps>, color: string) => {
-  // Define a new Icon component that forwards its ref and applies the given color.
-  const Icon = React.forwardRef<SVGSVGElement, IconProps>((props, ref) => (
-    <SVGComponent ref={ref} style={{ color }} {...props} />
-  ));
-
-  // Assign a displayName for easier identification in React DevTools.
-  Icon.displayName = `Icon(${SVGComponent.displayName || 'Anonymous'})`;
-
+const createIcon = (SVGComponent: React.ComponentType<IconProps>, color: string) => {
+  const Icon = (props: IconProps) => (
+    <SVGComponent className={`text-[${color}]`} {...props} />
+  );
+  Icon.displayName = `Icon(${SVGComponent.displayName || SVGComponent.name || "Anonymous"})`;
   return Icon;
 };
 
 // Export all icons with their default colors.
-export const InfoIcon = createIcon(InfoSVG as React.FC<IconProps>, COLORS.slateGray);
-export const DocumentIcon = createIcon(DocumentSVG as React.FC<IconProps>, COLORS.slateGray);
-export const CheckIcon = createIcon(CheckSVG as React.FC<IconProps>, COLORS.slateGray);
-export const SmallAddIcon = createIcon(SmallAddSVG as React.FC<IconProps>, COLORS.pureBlack);
-export const BigAddIcon = createIcon(BigAddSVG as React.FC<IconProps>, COLORS.inkBlack);
-export const MoreIcon = createIcon(MoreSVG as React.FC<IconProps>, COLORS.steelGray);
-export const FlagIcon = createIcon(FlagSVG as React.FC<IconProps>, COLORS.cobaltBlue);
-export const RenameIcon = createIcon(RenameSVG as React.FC<IconProps>, COLORS.steelGray);
-export const CopyIcon = createIcon(CopySVG as React.FC<IconProps>, COLORS.steelGray);
-export const DuplicateIcon = createIcon(DuplicateSVG as React.FC<IconProps>, COLORS.steelGray);
-export const DeleteIcon = createIcon(DeleteSVG as React.FC<IconProps>, COLORS.coralRed);
+export const InfoIcon = createIcon(InfoSVG, COLORS.slateGray);
+export const DocumentIcon = createIcon(DocumentSVG, COLORS.slateGray);
+export const CheckIcon = createIcon(CheckSVG, COLORS.slateGray);
+export const SmallAddIcon = createIcon(SmallAddSVG, COLORS.pureBlack);
+export const BigAddIcon = createIcon(BigAddSVG, COLORS.inkBlack);
+export const MoreIcon = createIcon(MoreSVG, COLORS.steelGray);
+export const FlagIcon = createIcon(FlagSVG, COLORS.cobaltBlue);
+export const RenameIcon = createIcon(RenameSVG, COLORS.steelGray);
+export const CopyIcon = createIcon(CopySVG, COLORS.steelGray);
+export const DuplicateIcon = createIcon(DuplicateSVG, COLORS.steelGray);
+export const DeleteIcon = createIcon(DeleteSVG, COLORS.coralRed);
