@@ -96,6 +96,7 @@ export function PageNavigation() {
         <Reorder.Item
           value={{ id: "__add_page__" }}
           dragListener={false}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           dragControls={undefined as any}
           className="flex-shrink-0"
         >

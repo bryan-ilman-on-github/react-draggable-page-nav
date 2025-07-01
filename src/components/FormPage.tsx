@@ -59,7 +59,7 @@ export function FormPage() {
         {/* Name input section. */}
         <div className="mb-6">
           <label htmlFor="name" className="block font-medium text-lg mb-4">
-            What's your name? <span className="text-white">*</span>
+            What&apos;s your name? <span className="text-white">*</span>
           </label>
           <input
             id="name"

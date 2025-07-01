@@ -78,7 +78,12 @@ export function PageButton({
   // Toggle menu visibility.
   const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
-    isMenuOpen ? setIsMenuOpen(false) : openMenu();
+
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    } else {
+      openMenu();
+    }
   };
 
   return (
